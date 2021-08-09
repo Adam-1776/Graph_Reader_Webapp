@@ -217,14 +217,16 @@ def main(path_to_image="static/sample_inputs/graph_def.png"):
     directory = r'static/downloads'
     os.chdir(directory)
     cv2.imwrite("out.png",output)
+    os.chdir('../..')
 
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads/'
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOADED_FILES_DEST'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
- 
+firstTime=True
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
  
 def allowed_file(filename):
@@ -236,6 +238,7 @@ def home():
  
 @app.route('/', methods=['POST'])
 def upload_image():
+    global firstTime
     if 'file' not in request.files:
         flash('No file received')
         return redirect(request.url)
@@ -245,8 +248,13 @@ def upload_image():
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #print('upload_image filename: ' + filename)
+        print('Entering file handling routine for '+filename)
+        if firstTime == True:
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            firstTime = False
+        else: 
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        print('upload_image filename: ' + filename)
         flash('Image successfully uploaded and displayed below')
         main('static/uploads/' + filename)
         return render_template('index.html', filename=filename)

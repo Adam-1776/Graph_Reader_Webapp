@@ -16,7 +16,7 @@
   <img src="{{ url_for('display_image2', filename=filename) }}" class="output">
   </div>
 {% else %}
-<img class="default" src="../static/sample_inputs/graph_def.png">
+<img class="default" src="../static/sample_inputs/graph_def.png" id="defaultImg">
 {% endif %}
 
 <form method="post" action="/" enctype="multipart/form-data">
