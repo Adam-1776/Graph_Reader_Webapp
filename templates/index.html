@@ -17,7 +17,7 @@
   </div>
 {% else %}
 <div><
-<img class="default" src="../static/sample_inputs/graph_def.png" id="defaultImg">
+<img class="default" src="../static/sample_inputs/def.png" id="defaultImg">
 </div>
 {% endif %}
 
@@ -30,14 +30,15 @@
     </label>
   </div>
   <input type="hidden" name="hiddenImg" id="hiddenImg" value="nothing">
-  <input type="submit" id="submit" value="Submit" class="submit">
-</form>
-<p>Or take a spin by selecting a sample image below:</p>
+  <p class="prompt">Upload an image, or take a spin using a sample image below:</p>
 <div class="samples">
 <img id="samp1" class="samp" src="../static/sample_inputs/graph_def.png">
 <img id="samp2" class="samp" src="../static/sample_inputs/graph_def2.png">
 </div>
-<p>Click 'submit' to analyze the image</p>
+<p>Click 'Submit' to analyze the image</p>
+  <input type="submit" id="submit" value="Submit" class="submit">
+</form>
+
 <p class="response-msg">
   {% with messages = get_flashed_messages() %}
     {% if messages %}
