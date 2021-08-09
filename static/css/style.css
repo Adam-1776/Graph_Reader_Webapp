@@ -1,0 +1,127 @@
+html{
+  font-size: 10px;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #034480;
+}
+
+body{
+  width: 75vw;
+  margin: 0 auto;
+  background-color: #a3c6e7;
+  padding: 0 20px 20px 20px;
+  border: 5px solid black;
+}
+
+h1{ /* This is a ruleset. In this case, h1 is the "selector" */
+  font-size: 35px;
+  text-align: center; /* This is a "declaration" in which text-align is the "property" and center is the "value" */
+  margin: 0; /*This line is a nother "declaration" */
+  padding: 20px 0;
+  color: #000000;
+  /* text-shadow: 3px 3px 1px black; */
+  /* All of these declarations form the "declaration block" (everything inside the curly brackets) */
+}
+
+.intro{
+  margin-top: -9px;
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 1px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.default{
+  border: 7px solid #034480;
+  display: block;
+  margin: 0 auto;
+  max-width: 90%;
+  height: auto;
+  margin-bottom: 1em;
+}
+
+.output{
+  border: 7px solid #034480;
+  display: block;
+  margin: 0 auto;
+  max-width: 90%;
+  height: auto;
+  margin-bottom: 1em;
+}
+
+.submit{
+  display: block;
+  position: relative;
+  width: 200px;
+  height: 50px;
+  border-radius: 25px;
+  background: linear-gradient(40deg, #ff6ec4, #7873f5);
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.75em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .2s ease-out;
+  margin-top: 2em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+.analyze:hover{
+  border: 4px solid #f85d03;
+}
+
+.file {
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  position: absolute;
+}
+
+.file-input label{
+  display: block;
+  position: relative;
+  width: 200px;
+  height: 50px;
+  border-radius: 25px;
+  background: linear-gradient(40deg, #ff6ec4, #7873f5);
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.75em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .2s ease-out;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+label:hover, label:focus, .submit:focus, .submit:hover{
+  transform: scale(1.1);
+}
+
+.file-name {
+  position: absolute;
+  bottom: -40px;
+  left: 25px;
+  font-size: 1.3rem;
+  color: rgb(8, 8, 8);
+}
+
+.response-msg{
+  margin-top: -9px;
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 1px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Graph Reader</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <link href="../static/css/style.css" rel="stylesheet" type="text/css">
+    <script src="../static/js/main.js" defer></script>
+  </head>
+<body>
+<h1>Graph Reader</h1>
+<p class="intro">Upload an image of a directed graph, and this app will try to read and analyze it</p>
+
+{% if filename %}
+  <div>
+  <img src="{{ url_for('display_image2', filename=filename) }}" class="output">
+  </div>
+{% else %}
+<img class="default" src="../static/sample_inputs/graph_def.png">
+{% endif %}
+
+<form method="post" action="/" enctype="multipart/form-data">
+  <div class="file-input">
+    <input type="file" id="file" name="file" class="file" autocomplete="off" required>
+    <label for="file">
+      Select Image
+      <p class="file-name"></p>
+    </label>
+  </div>
+  <input type="submit" value="Submit" class="submit">
+</form>
+
+<p class="response-msg">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        {{ message }}<br>
+      {% endfor %} 
+    {% endif %}
+  {% endwith %}
+</p>
+
+</body>
