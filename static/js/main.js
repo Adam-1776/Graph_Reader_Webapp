@@ -1,13 +1,32 @@
 const file = document.querySelector('#file');
 file.addEventListener('change', (e) => {
-  // Get the selected file
   const [file] = e.target.files;
-  // Get the file name and size
   defaultImg.src = URL.createObjectURL(file)
   const { name: fileName, size } = file;
-  // Convert size in bytes to kilo bytes
   const fileSize = (size / 1000).toFixed(2);
-  // Set the text content
   const fileNameAndSize = `${fileName} - ${fileSize}KB`;
   document.querySelector('.file-name').textContent = fileNameAndSize;
 });
+
+const samp1 = document.querySelector("#samp1");
+samp1.onclick = function(){
+  let mySrc = samp1.getAttribute('src');
+  const defaultImg = document.querySelector("#defaultImg");
+  const hiddenImg = document.querySelector("#hiddenImg");
+  defaultImg.setAttribute ('src',mySrc);
+  hiddenImg.setAttribute ('value','graph_def.png')
+  document.querySelector("#file").removeAttribute('required');
+  document.querySelector('.file-name').textContent = "";
+}
+
+const samp2 = document.querySelector("#samp2");
+samp2.onclick = function(){
+  let mySrc = samp2.getAttribute('src');
+  const hiddenImg = document.querySelector("#hiddenImg");
+  const defaultImg = document.querySelector("#defaultImg");
+  defaultImg.setAttribute ('src',mySrc);
+  hiddenImg.setAttribute ('value','graph_def2.png')
+  document.querySelector("#file").removeAttribute('required');
+  document.querySelector('.file-name').textContent = "";
+}
+

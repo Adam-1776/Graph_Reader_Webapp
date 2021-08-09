@@ -13,23 +13,31 @@
 
 {% if filename %}
   <div>
-  <img src="{{ url_for('display_image2', filename=filename) }}" class="output">
+  <img src="{{ url_for('display_image2', filename=filename) }}" id="defaultImg" class="default">
   </div>
 {% else %}
+<div><
 <img class="default" src="../static/sample_inputs/graph_def.png" id="defaultImg">
+</div>
 {% endif %}
 
-<form method="post" action="/" enctype="multipart/form-data">
+<form id="imgSelect" method="post" action="/" enctype="multipart/form-data">
   <div class="file-input">
     <input type="file" id="file" name="file" class="file" autocomplete="off" required>
     <label for="file">
-      Select Image
+      Browse Image to Upload
       <p class="file-name"></p>
     </label>
   </div>
-  <input type="submit" value="Submit" class="submit">
+  <input type="hidden" name="hiddenImg" id="hiddenImg" value="nothing">
+  <input type="submit" id="submit" value="Submit" class="submit">
 </form>
-
+<p>Or take a spin by selecting a sample image below:</p>
+<div class="samples">
+<img id="samp1" class="samp" src="../static/sample_inputs/graph_def.png">
+<img id="samp2" class="samp" src="../static/sample_inputs/graph_def2.png">
+</div>
+<p>Click 'submit' to analyze the image</p>
 <p class="response-msg">
   {% with messages = get_flashed_messages() %}
     {% if messages %}

@@ -244,8 +244,12 @@ def upload_image():
         return redirect(request.url)
     file = request.files['file']
     if file.filename == '':
-        flash('No image selected for uploading')
-        return redirect(request.url)
+        if 'hiddenImg' in request.form and request.form['hiddenImg']!="nothing":
+            main('static/sample_inputs/' + request.form['hiddenImg'])
+            return render_template('index.html', filename=request.form['hiddenImg'])
+        else:
+            flash('Unknown Error')
+            return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         print('Entering file handling routine for '+filename)
@@ -255,7 +259,7 @@ def upload_image():
         else: 
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         print('upload_image filename: ' + filename)
-        flash('Image successfully uploaded and displayed below')
+        flash('Image successfully uploaded and analyzed')
         main('static/uploads/' + filename)
         return render_template('index.html', filename=filename)
     else:
@@ -268,7 +272,7 @@ def display_image(filename):
     return redirect(url_for('static', filename='uploads/' + filename), code=301)
 
 @app.route('/display2/<filename>')
-def display_image2(filename):
+def display_image2(filename="out.png"): #filename="out.png"
     #print('display_image filename: ' + filename)
     return redirect(url_for('static', filename='downloads/' + 'out.png'), code=301)
  

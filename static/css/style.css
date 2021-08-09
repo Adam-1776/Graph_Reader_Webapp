@@ -12,14 +12,12 @@ body{
   border: 5px solid black;
 }
 
-h1{ /* This is a ruleset. In this case, h1 is the "selector" */
+h1{
   font-size: 35px;
-  text-align: center; /* This is a "declaration" in which text-align is the "property" and center is the "value" */
-  margin: 0; /*This line is a nother "declaration" */
+  text-align: center;
+  margin: 0;
   padding: 20px 0;
   color: #000000;
-  /* text-shadow: 3px 3px 1px black; */
-  /* All of these declarations form the "declaration block" (everything inside the curly brackets) */
 }
 
 .intro{
@@ -94,8 +92,8 @@ h1{ /* This is a ruleset. In this case, h1 is the "selector" */
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 1.75em;
-  font-weight: bold;
+  font-size: 1.5em;
+  font-weight: bolder;
   cursor: pointer;
   transition: transform .2s ease-out;
   margin-left: auto;
@@ -124,4 +122,33 @@ label:hover, label:focus, .submit:focus, .submit:hover{
   font-weight: bolder;
 }
 
+.samples{
+  display: flex;
+  flex-direction: row;
+  margin-top: 2em;
+  margin-bottom: 20px;
+  align-items: space-between;
+  justify-content: space-around;
+  gap: 3em;
+}
 
+.samp{
+  max-width: 16em;
+  height: auto;
+  border: 3px solid #034480;
+}
+
+.samp:hover{
+  transform: scale(1.1);
+  border: 3px solid #f85d03;
+  cursor: pointer;
+}
+
+p{
+  margin-top: -9px;
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 1px;
+  text-align: center;
+  font-weight: bolder;
+}
