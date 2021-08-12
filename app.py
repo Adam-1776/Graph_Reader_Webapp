@@ -60,7 +60,7 @@ def display_image(filename):
 @app.route('/display2/<filename>')
 def display_image2(filename): #filename="out.png"
     print('display_image2 filename: ' + filename)
-    return redirect(url_for('static', filename='sample_outputs' + filename), code=301)
+    return redirect(url_for('static', filename='sample_outputs/' + filename), code=301)
  
 if __name__ == "__main__":
     app.run()
