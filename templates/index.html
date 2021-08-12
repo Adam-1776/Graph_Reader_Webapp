@@ -11,12 +11,16 @@
 <h1>Graph Reader</h1>
 <p class="intro">Upload an image of a directed graph, and this app will try to read and analyze it</p>
 
-{% if filename %}
+{% if filename and sample==True %}
   <div>
   <img src="{{ url_for('display_image2', filename=filename) }}" id="defaultImg" class="default">
   </div>
+{% elif filename and sample==False %}
+  <div>
+  <img src="{{ url_for('display_image', filename=filename) }}" id="defaultImg" class="default">
+  </div>
 {% else %}
-<div><
+<div>
 <img class="default" src="../static/sample_inputs/def.png" id="defaultImg">
 </div>
 {% endif %}

@@ -23,19 +23,11 @@ def home():
 @app.route('/', methods=['POST'])
 def upload_image():
     global firstTime
-    if 'file' not in request.files:
+    if 'file' not in request.files and request.form['hiddenImg']=="nothing":
         flash('No file received')
         return redirect(request.url)
     file = request.files['file']
-    if file.filename == '':
-        if 'hiddenImg' in request.form and request.form['hiddenImg']!="nothing":
-            import graph
-            graph.main('static/sample_inputs/' + request.form['hiddenImg'])
-            return render_template('index.html', filename=request.form['hiddenImg'])
-        else:
-            flash('Unknown Error')
-            return redirect(request.url)
-    if file and allowed_file(file.filename):
+    if file and file.filename!='' and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         print('Entering file handling routine for '+filename)
         if firstTime == True:
@@ -45,23 +37,33 @@ def upload_image():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         print('upload_image filename: ' + filename)
         flash('Image successfully uploaded and analyzed')
-        main('static/uploads/' + filename)
-        return render_template('index.html', filename=filename)
+        import graph
+        graph.main('static/uploads/' + filename)
+        sample=False
+        return render_template('index.html', filename=filename, sample=sample)
+    if file.filename == '':
+        if 'hiddenImg' in request.form and request.form['hiddenImg']!="nothing":
+            sample=True
+            return render_template('index.html', filename=request.form['hiddenImg'], sample=sample)
+        else:
+            flash('Unknown Error')
+            return redirect(request.url)
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
  
 @app.route('/display/<filename>')
 def display_image(filename):
-    #print('display_image filename: ' + filename)
-    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+    print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='downloads/' + filename), code=301)
 
 @app.route('/display2/<filename>')
 def display_image2(filename): #filename="out.png"
     print('display_image2 filename: ' + filename)
-    return redirect(url_for('static', filename='downloads/' + filename), code=301)
+    return redirect(url_for('static', filename='sample_outputs' + filename), code=301)
  
 if __name__ == "__main__":
     app.run()
 
+#Written by Adam Rizk
 
