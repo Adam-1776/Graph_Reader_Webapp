@@ -30,18 +30,14 @@ def upload_image():
     if file and file.filename!='' and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         print('Entering file handling routine for '+filename)
-        if firstTime == True:
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            firstTime = False
-        else: 
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         print('upload_image filename: ' + filename)
         flash('Image successfully uploaded and analyzed')
         import graph
         graph.main('static/uploads/' + filename)
         sample=False
         return render_template('index.html', filename=filename, sample=sample)
-    if file.filename == '':
+    elif file.filename == '':
         if 'hiddenImg' in request.form and request.form['hiddenImg']!="nothing":
             sample=True
             return render_template('index.html', filename=request.form['hiddenImg'], sample=sample)

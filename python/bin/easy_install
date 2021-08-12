@@ -1,4 +1,4 @@
-#!/home/adam/Desktop/graph_gui/python/bin/python3
+#!/home/adam/Desktop/Graph_Reader_Webapp/python/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
