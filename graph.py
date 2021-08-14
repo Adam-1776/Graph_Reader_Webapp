@@ -16,25 +16,32 @@ def preprocess(img):
     img_erode = cv2.erode(img_dilate, kernel, iterations=1)
     return img_erode
 
-def find_tip(points, convex_hull):
-    length = len(points)
-    indices = np.setdiff1d(range(length), convex_hull)
-
-    for i in range(2):
-        j = indices[i] + 2
-        if j > length - 1:
-            j = length - j
-        if np.all(points[j] == points[indices[i - 1] - 2]):
-            return tuple(points[j])
-
-def find_beg(points,arrow_tip):
+def find_tip(points, convex_hull, output):
     length = len(points)
     biggest = 0
     for i in range(length):
-        if distance(tuple(points[i]),tuple(arrow_tip)) > biggest :
-            biggest = distance(points[i],arrow_tip)
-            biggestt = points[i]
-    return tuple(biggestt)
+        for j in range(length):
+            if i!=j and distance(tuple(points[i]),tuple(points[j])) > biggest :
+                biggest = distance(points[i],points[j])
+                point1 = points[i]
+                point2 = points[j]
+                index1=i
+                index2=j
+    smallest1=99999
+    smallest2=99999
+    for i in range(length):
+        if i!=index1 and i!=index2:
+            if distance(tuple(points[i]),tuple(point1)) < smallest1:
+                smallest1 = distance(tuple(points[i]),tuple(point1))
+            if distance(tuple(points[i]),tuple(point2)) < smallest2:
+                smallest2 = distance(tuple(points[i]),tuple(point2))
+    if smallest1<smallest2:
+        point1=point2
+        point2=points[index1]
+    tup=[0,0]
+    tup[0]=tuple(point1)
+    tup[1]=tuple(point2)
+    return tup
 
 def find_tips(points):
     length = len(points)
@@ -50,12 +57,13 @@ def find_tips(points):
     biggest2=0
     for i in range(length):
         for j in range(length):
-            if i!=index1 and i!=index2 and j!=index1 and j!=index2 and i!=distance(tuple(points[i]),tuple(points[j])) > biggest2 :
-                biggest2 = distance(points[i],points[j])
-                point3 = points[i]
-                point4 = points[j]
-                index3 = i
-                index4 = j
+            if i!=index1 and i!=index2 and j!=index1 and j!=index2 and biggest2 < distance(tuple(points[i]),tuple(points[j])):
+                if distance(tuple(points[i]),tuple(point1)) > 60 and distance(tuple(points[i]),tuple(point2)) > 60 and distance(tuple(points[j]),tuple(point1)) > 60 and distance(tuple(points[j]),tuple(point2)) > 60:
+                    biggest2 = distance(points[i],points[j])
+                    point3 = points[i]
+                    point4 = points[j]
+                    index3 = i
+                    index4 = j
     smallest1=99999
     for i in range(length):
         if i!=index1 and i!=index2 and i!=index3 and i!=index4 and distance(points[i],point1) < smallest1 :
@@ -100,6 +108,11 @@ def processtxt(txt):
     if len(txt2)==2 and txt2[0].isupper() and txt2[1]==txt[0].lower() :
             txt2=txt2[0:1]
     return txt2
+
+def preprocesscrop(img):
+    img = cv2.resize(img, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
+    img = cv2.GaussianBlur(img, (3, 3), 0)
+    return img
 
 class edge:
     def __init__(self,countour,beg_point,edge_tip):
@@ -157,11 +170,9 @@ def main(path_to_image="static/sample_inputs/graph_def.png"):
         approx = cv2.approxPolyDP(cnt, 0.025 * peri, True)
         hull = cv2.convexHull(approx, returnPoints=False)
         sides = len(hull)
-        if 6 > sides > 3 and sides + 2 == len(approx):
-            arrow_tip = find_tip(approx[:,0,:], hull.squeeze())
-            if arrow_tip:
-                beg_point = find_beg(approx[:,0,:], arrow_tip)
-                listEdges.append(edge(cnt,beg_point,arrow_tip))
+        if 6 > sides > 3 and (len(approx)!=8):
+            tips = find_tip(approx[:,0,:], hull.squeeze(), output)
+            listEdges.append(edge(cnt,tips[0],tips[1]))
         elif sides == 4 and len(approx) == 8:
             approx = cv2.approxPolyDP(cnt, 0.01 * peri, True)
             tips = find_tips(approx[:,0,:])
@@ -179,11 +190,15 @@ def main(path_to_image="static/sample_inputs/graph_def.png"):
         gray = cropped
         circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 0.9, 20, param1 = 50, param2 = 30, minRadius = 30, maxRadius = 155)
         if circles is not None:
-            x=x+31
-            y=y+33
-            w=w-60
-            h=h-63
-            cropped = exno[y:y + h, x:x + w]
+            height = gray.shape[0]
+            width = gray.shape[1]
+            x=0; y=0
+            x=x+int((width/4))
+            y=y+int((height/4))
+            w=int((width/2))
+            h=int((width/2))
+            cropped = gray[y:y + h, x:x + w]
+            cropped = preprocesscrop(cropped)
             txt = pytesseract.image_to_string(cropped,config='--psm 9')
             txt=processtxt(txt)
             listNodes.append(node(cnt,txt))
@@ -198,18 +213,15 @@ def main(path_to_image="static/sample_inputs/graph_def.png"):
             if dist<nearest_beg:
                 nearest_beg = dist
                 beg_node=node_
-        #print('Distance from beg to '+ node_.name + ' is ' + str(dist))
             dist2 = cv2.pointPolygonTest(node_.cnt,obj.getArr(),True) * -1
             if dist2 < nearest_tip:
                 nearest_tip = dist2
                 tip_node=node_
-            #print('Distance from arr to '+ node_.name + ' is ' + str(dist2))
         if len(listNodes)>0 :
             print('Found edge connecting '+ beg_node.name + ' to ' + tip_node.name)
     
     for obj in listNodes:
         obj.highlight(output)
-        #cv2.imshow("Image", output)
     directory = r'static/downloads'
     os.chdir(directory)
     index1 = path_to_image.find('/')
