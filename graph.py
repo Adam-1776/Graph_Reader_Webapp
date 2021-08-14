@@ -16,7 +16,7 @@ def preprocess(img):
     img_erode = cv2.erode(img_dilate, kernel, iterations=1)
     return img_erode
 
-def find_tip(points, convex_hull, output):
+def find_tip(points):
     length = len(points)
     biggest = 0
     for i in range(length):
@@ -171,7 +171,7 @@ def main(path_to_image="static/sample_inputs/graph_def.png"):
         hull = cv2.convexHull(approx, returnPoints=False)
         sides = len(hull)
         if 6 > sides > 3 and (len(approx)!=8):
-            tips = find_tip(approx[:,0,:], hull.squeeze(), output)
+            tips = find_tip(approx[:,0,:])
             listEdges.append(edge(cnt,tips[0],tips[1]))
         elif sides == 4 and len(approx) == 8:
             approx = cv2.approxPolyDP(cnt, 0.01 * peri, True)
