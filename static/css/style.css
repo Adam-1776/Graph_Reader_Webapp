@@ -156,9 +156,9 @@ p{
   font-weight: bolder;
 }
 
-.analysis {
-  max-width: 75%;
-  margin: auto;
+#analysis {
+  display: flex;
+  justify-content: center;
 }
 
 table, th, td {
@@ -166,10 +166,12 @@ table, th, td {
   text-align: center;
   table-layout: auto;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 1.3em;
   min-width: 30%;
 }
 
 td, th {
-  width: 1px;
+  padding: 3px 3px 3px 3px;
+  max-width: 65px;
+  min-width: 30px;
 }
