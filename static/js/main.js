@@ -76,6 +76,7 @@ function getMatrix(parameter){
     {nameOfFile=parameter;
     console.log(parameter);
     }
+  if(nameOfFile=="") return;
   fetch('/matrix/'+nameOfFile)
   .then(function (response) {
     return response.json();
@@ -83,4 +84,8 @@ function getMatrix(parameter){
   .then(function (text) {
     processMatrix(text); 
 });
+}
+
+function pressButton(){
+  document.getElementById("getJson").click();
 }
