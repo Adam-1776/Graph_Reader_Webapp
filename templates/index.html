@@ -38,6 +38,7 @@
 <div class="samples">
 <img id="samp1" class="samp" src="../static/sample_inputs/graph_def.png">
 <img id="samp2" class="samp" src="../static/sample_inputs/graph_def2.png">
+<img id="samp3" class="samp" src="../static/sample_inputs/graph_def3.png">
 </div>
 <p>Click 'Submit' to analyze the image</p>
   <input type="submit" id="submit" value="Submit" class="submit">
@@ -53,8 +54,13 @@
   {% endwith %}
 </p>
 {% if filename %}
-<button onclick="getMatrix('{{filename}}')">Click me</button> 
+<button id="getJson" onclick="getMatrix('{{filename}}')">Click me</button> 
 {% else %}
-<button onclick="getMatrix('none')">Click me</button> 
+<button id="getJson" onclick="getMatrix('none')">Click me</button> 
 {% endif %}
+<div id="analysis">
+
+  
+</div>
 </body>
+</html>

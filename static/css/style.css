@@ -69,9 +69,6 @@ h1{
   margin-bottom: 11px;
 }
 
-.analyze:hover{
-  border: 4px solid #f85d03;
-}
 
 .file {
   opacity: 0;
@@ -157,4 +154,22 @@ p{
   letter-spacing: 1px;
   text-align: center;
   font-weight: bolder;
+}
+
+.analysis {
+  max-width: 75%;
+  margin: auto;
+}
+
+table, th, td {
+  border:1px solid black;
+  text-align: center;
+  table-layout: auto;
+  white-space: nowrap;
+  font-size: 12px;
+  min-width: 30%;
+}
+
+td, th {
+  width: 1px;
 }
