@@ -56,7 +56,7 @@ function processMatrix(matrix){
   for(let i=0;i<matrix.num_nodes;++i)
     console.log(nodeArray[i]);
   let area = document.getElementById("analysis");
-  let string = '<table><tr><th>Nodes</th>';
+  let string = '<h2>Adjacency Matrix</h2><table><tr><th>Nodes</th>';
   for(let i=0;i<matrix.num_nodes;++i)
     string += '<th>'+nodeArray[i]+'</th>';
   string += '</tr>';
@@ -66,7 +66,7 @@ function processMatrix(matrix){
        string += '<td>'+matrix.matrix[i][j]+'</td>';
     }
     string += '</tr>';
-  }
+  } string += '</table><h2>Adjacency List</h2>'
   
   area.innerHTML = string;
 }
