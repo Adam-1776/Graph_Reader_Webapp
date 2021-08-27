@@ -52,5 +52,9 @@
     {% endif %}
   {% endwith %}
 </p>
-
+{% if filename %}
+<button onclick="getMatrix('{{filename}}')">Click me</button> 
+{% else %}
+<button onclick="getMatrix('none')">Click me</button> 
+{% endif %}
 </body>

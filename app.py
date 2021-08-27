@@ -3,6 +3,7 @@ import urllib.request
 import os
 from werkzeug.utils import secure_filename
 import numpy as np
+import json
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads/'
@@ -22,7 +23,6 @@ def home():
  
 @app.route('/', methods=['POST'])
 def upload_image():
-    global firstTime
     if 'file' not in request.files and request.form['hiddenImg']=="nothing":
         flash('No file received')
         return redirect(request.url)
@@ -47,7 +47,15 @@ def upload_image():
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
- 
+
+@app.route('/matrix/<filename>')
+def result_json(filename):
+   index1 = filename.find('.')
+   filepath='static/downloads/'+filename[:index1+1]+'json'
+   f = open(filepath)
+   data = json.load(f)
+   return data
+
 @app.route('/display/<filename>')
 def display_image(filename):
     print('display_image filename: ' + filename)

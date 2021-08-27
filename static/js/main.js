@@ -1,8 +1,11 @@
+let nameOfFile="";
+
 const file = document.querySelector('#file');
 file.addEventListener('change', (e) => {
   const [file] = e.target.files;
   defaultImg.src = URL.createObjectURL(file)
   const { name: fileName, size } = file;
+  nameOfFile=fileName;
   const fileSize = (size / 1000).toFixed(2);
   const fileNameAndSize = `${fileName} - ${fileSize}KB`;
   document.querySelector('.file-name').textContent = fileNameAndSize;
@@ -15,6 +18,8 @@ samp1.onclick = function(){
   const hiddenImg = document.querySelector("#hiddenImg");
   defaultImg.setAttribute ('src',mySrc);
   hiddenImg.setAttribute ('value','graph_def.png')
+  if(nameOfFile==""){
+    nameOfFile='graph_def.png';}
   document.querySelector("#file").removeAttribute('required');
   document.querySelector('.file-name').textContent = "";
 }
@@ -26,7 +31,23 @@ samp2.onclick = function(){
   const defaultImg = document.querySelector("#defaultImg");
   defaultImg.setAttribute ('src',mySrc);
   hiddenImg.setAttribute ('value','graph_def2.png')
+  if(nameOfFile==""){
+    nameOfFile='graph_def2.png';}
   document.querySelector("#file").removeAttribute('required');
   document.querySelector('.file-name').textContent = "";
 }
 
+function getMatrix(parameter){
+  if(parameter!='none')
+    {nameOfFile=parameter;
+    console.log(parameter);
+    }
+  fetch('/matrix/'+nameOfFile)
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (text) {
+    console.log('GET response:');
+    console.log(JSON.stringify(text)); 
+});
+}
