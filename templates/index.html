@@ -54,9 +54,9 @@
   {% endwith %}
 </p>
 {% if filename %}
-<button id="getJson" onclick="getMatrix('{{filename}}')">Click me</button> 
+<button id="getJson" class="hidden" onclick="getMatrix('{{filename}}')">Click me</button> 
 {% else %}
-<button id="getJson" onclick="getMatrix('none')">Click me</button> 
+<button id="getJson" class="hidden" onclick="getMatrix('none')">Click me</button> 
 {% endif %}
 <div id="analysis">
 

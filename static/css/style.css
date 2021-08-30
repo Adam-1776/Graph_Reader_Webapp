@@ -20,6 +20,14 @@ h1{
   color: #000000;
 }
 
+h2{
+  font-size: 23px;
+  text-align: center;
+  margin: 0;
+  padding: 20px 0;
+  color: #000000;
+}
+
 .intro{
   margin-top: -9px;
   font-size: 16px;
@@ -69,6 +77,9 @@ h1{
   margin-bottom: 11px;
 }
 
+.hidden{
+  display: none;
+}
 
 .file {
   opacity: 0;
@@ -100,7 +111,33 @@ h1{
   margin-top: 2px;
 }
 
-label:hover, label:focus, .submit:focus, .submit:hover{
+#mindistance{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#mindistance label{
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+#mindistresult{
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+#mindistance input[type=text]{
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 16px;
+  font-weight: bolder;
+  margin-left: 0.75em;
+  margin-right: 0.75em;
+  margin-bottom: 7px;
+}
+
+form label:hover, form label:focus, form .submit:focus, form .submit:hover{
   transform: scale(1.1);
 }
 
@@ -176,5 +213,31 @@ table, th, td {
 td, th {
   padding: 3px 3px 3px 3px;
   max-width: 65px;
-  min-width: 30px;
+  min-width: 35px;
+}
+
+#alist {
+  font-size: 21px;
+}
+
+#mindistancebtn{
+  display: block;
+  position: relative;
+  width: 100px;
+  height: 35px;
+  border-radius: 25px;
+  background: linear-gradient(40deg, #ff6ec4, #7873f5);
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.75em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .2s ease-out;
+  margin-top: 0.3em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -5px;
 }
