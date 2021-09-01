@@ -192,6 +192,53 @@ h2{
   font-size: 21px;
 }
 
+#dfs{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#dfs label{
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+#dfs input[type=text]{
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 16px;
+  font-weight: bolder;
+  margin-left: 0.75em;
+  margin-right: 0.75em;
+  margin-bottom: 7px;
+}
+
+#dfsbtn{
+  display: block;
+  position: relative;
+  width: 100px;
+  height: 35px;
+  border-radius: 25px;
+  background: linear-gradient(40deg, #ff6ec4, #7873f5);
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.75em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .2s ease-out;
+  margin-top: 0.3em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -5px;
+}
+
+#dfsresult p{
+  font-size: 21px;
+}
+
 form label:hover, form label:focus, form .submit:focus, form .submit:hover{
   transform: scale(1.1);
 }

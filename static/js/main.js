@@ -146,7 +146,6 @@ function djistracaller(){
 }
 
 function bfscaller(){
-  var t0=performance.now();
   let bfsnode=document.getElementById("bfsnode").value.toUpperCase();
   for(let i=0;i<matrix2.num_nodes;++i){
     if(matrix2.node_names[i]==bfsnode) bfsnode=i;
@@ -171,6 +170,34 @@ function bfscaller(){
   space=document.getElementById("bfsresult");
   path=path.substring(0,path.length-4);
   string='<p>BFS Traversal: '+path+'</p>';
+  path="";
+  space.innerHTML=string;
+}
+
+function dfscaller(){
+  let dfsnode=document.getElementById("dfsnode").value.toUpperCase();
+  for(let i=0;i<matrix2.num_nodes;++i){
+    if(matrix2.node_names[i]==dfsnode) dfsnode=i;
+  }
+  console.log("Finding DFS from "+matrix2.node_names[dfsnode]);
+  let stack = new Stack;
+  let visited=new Array(matrix2.num_nodes);
+  for(let i=0;i<visited.length;++i){visited[i]=false;}
+  path="";
+  stack.push(dfsnode);
+    while(!stack.isEmpty()){
+        dfsnode=stack.pop();
+        if(visited[dfsnode]==false){
+           visited[dfsnode]=true;
+           path+=matrix2.node_names[dfsnode]+' -> ';
+           for (let j=0;j<matrix2.matrix[dfsnode].length;++j){
+              if(matrix2.matrix[dfsnode][j]==1){stack.push(j);}
+           }
+        }
+    }
+  space=document.getElementById("dfsresult");
+  path=path.substring(0,path.length-4);
+  string='<p>DFS Traversal: '+path+'</p>';
   path="";
   space.innerHTML=string;
 }
@@ -212,6 +239,10 @@ function processMatrix(matrix){
   string+='<label for="bfsnode">From Node:  </label>';
   string+='<input type="text" id="bfsnode">';
   string+='<button id="bfsbtn" onclick="bfscaller()">Search</button></div><div id="bfsresult"></div>';
+  string+='<h2>Depth First Search (DFS)</h2><div id="dfs">';
+  string+='<label for="dfsnode">From Node:  </label>';
+  string+='<input type="text" id="dfsnode">';
+  string+='<button id="dfsbtn" onclick="dfscaller()">Search</button></div><div id="dfsresult"></div>';
   area.innerHTML = string;
 }
 
