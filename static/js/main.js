@@ -1,5 +1,6 @@
 let nameOfFile="";
 var matrix2;
+var path="";
 const file = document.querySelector('#file');
 file.addEventListener('change', (e) => {
   const [file] = e.target.files;
@@ -62,6 +63,13 @@ function minDistance(matrix,dist,sptSet){
   return min_index;
 }
 
+function printPath(currentVertex,parents){
+  if(currentVertex==-1) return;
+  printPath(parents[currentVertex], parents);
+  console.log("path "+currentVertex+" ");
+  path+=matrix2.node_names[currentVertex]+" -> ";
+}
+
 function djistra(matrix,start,end){
   let dist=new Array(matrix.num_nodes);
   let sptSet=new Array(matrix.num_nodes);
@@ -70,15 +78,19 @@ function djistra(matrix,start,end){
     sptSet[i]=false;
   }
   dist[start]=0;
+  let parents = new Array(matrix.num_nodes);
+  parents[start] = -1;
   for(let count=0;count<matrix.num_nodes-1;++count){
     let u=minDistance(matrix,dist,sptSet);
     sptSet[u]=true;
     for(let v=0;v<matrix.num_nodes;++v){
       if(!sptSet[v] && matrix.matrix[u][v]!=0 && dist[u]!=99999 && dist[u]+matrix.matrix[u][v]<dist[v]){
         dist[v]=dist[u]+matrix.matrix[u][v];
+        parents[v] = u;
       }
     }
   }
+  printPath(end, parents);
   //for(let i=0;i<matrix.num_nodes;++i)
     //console.log(matrix.node_names[i]+' '+dist[i]);
   return dist[end];
@@ -94,7 +106,10 @@ function djistracaller(){
   console.log("Finding paths between "+snode+" "+enode);
   let ret = djistra(matrix2,snode,enode);
   let space=document.getElementById("mindistresult");
-  string='<br>Shortest Path from '+matrix2.node_names[snode]+' to '+matrix2.node_names[enode]+' is '+ret+'<br>';
+  string='<p>Shortest Path from '+matrix2.node_names[snode]+' to '+matrix2.node_names[enode]+' is <u>'+ret+'</u>:</p><br>';
+  path=path.substring(0,path.length-4);
+  string+=path+'<br>';
+  path="";
   space.innerHTML=string;
 
 }
