@@ -1,6 +1,36 @@
 let nameOfFile="";
 var matrix2;
 var path="";
+
+class Stack{
+  constructor(){this.items=[];}
+  push(element){this.items.push(element);}
+  pop(){
+    if(this.items.length==0)
+      return "Underflow";
+    return this.items.pop();
+  }
+  peek(){return this.items[this.items.length - 1];}
+  isEmpty(){return this.items.length == 0;}
+}
+
+class Queue{
+  constructor(){this.items=[];}
+  enqueue(element){this.items.push(element);}
+  dequeue(){
+    if(this.isEmpty())
+        return "Underflow";
+    return this.items.shift();
+  }
+  front(){
+    if(this.isEmpty())
+        return "Underflow";
+    return this.items[0];
+  }
+  isEmpty(){return this.items.length == 0;}
+}
+
+
 const file = document.querySelector('#file');
 file.addEventListener('change', (e) => {
   const [file] = e.target.files;
@@ -97,21 +127,52 @@ function djistra(matrix,start,end){
 }
 
 function djistracaller(){
-  let snode=document.getElementById("snode").value;
-  let enode=document.getElementById("enode").value;
+  var t0 = performance.now()
+  let snode=document.getElementById("snode").value.toUpperCase();
+  let enode=document.getElementById("enode").value.toUpperCase();
   for(let i=0;i<matrix2.num_nodes;++i){
     if(matrix2.node_names[i]==snode) snode=i;
     if(matrix2.node_names[i]==enode) enode=i;
   }
   console.log("Finding paths between "+snode+" "+enode);
   let ret = djistra(matrix2,snode,enode);
+  var t1 = performance.now();
   let space=document.getElementById("mindistresult");
-  string='<p>Shortest Path from '+matrix2.node_names[snode]+' to '+matrix2.node_names[enode]+' is <u>'+ret+'</u>:</p><br>';
+  string='<p>Shortest Path from '+matrix2.node_names[snode]+' to '+matrix2.node_names[enode]+' has length <u>'+ret+'</u>: (Took ' + (t1-t0) +' milliseconds to compute)</p><br>';
   path=path.substring(0,path.length-4);
   string+=path+'<br>';
   path="";
   space.innerHTML=string;
+}
 
+function bfscaller(){
+  var t0=performance.now();
+  let bfsnode=document.getElementById("bfsnode").value.toUpperCase();
+  for(let i=0;i<matrix2.num_nodes;++i){
+    if(matrix2.node_names[i]==bfsnode) bfsnode=i;
+  }
+  console.log("Finding BFS from "+matrix2.node_names[bfsnode]);
+  let queue=new Queue();
+  let visited=new Array(matrix2.num_nodes);
+  for(let i=0;i<visited.length;++i){visited[i]=false;}
+  path="";
+  visited[bfsnode]=true;
+  queue.enqueue(bfsnode); 
+  while(!queue.isEmpty()){
+    let visiting=queue.dequeue();
+    path+=matrix2.node_names[visiting]+' -> ';
+    for(let j=0;j<matrix2.matrix[visiting].length;++j){
+      if((matrix2.matrix[visiting][j]==1)&&(visited[j]==false)){  
+        visited[j] = true;
+        queue.enqueue(j);
+      }
+    }
+  }
+  space=document.getElementById("bfsresult");
+  path=path.substring(0,path.length-4);
+  string='<p>BFS Traversal: '+path+'</p>';
+  path="";
+  space.innerHTML=string;
 }
 
 function processMatrix(matrix){
@@ -139,7 +200,7 @@ function processMatrix(matrix){
     string += '<br>';
   }
   
-  string+='</div><h2>Find shortest path between two Nodes using Djistras Algorithm:</h2>';
+  string+='</div><h2>Find shortest path between two Nodes using Dijkstras Algorithm:</h2>';
   string+='<br><div id="mindistance">'
   string+='<label for="snode">From Node:  </label>'
   string+='<input type="text" id="snode">'
@@ -147,6 +208,10 @@ function processMatrix(matrix){
   string+='<input type="text" id="enode">'
   string+='<button id="mindistancebtn" onclick="djistracaller()">Find Path</button>';
   string+='</div><div id="mindistresult"></div>';
+  string+='<h2>Breadth First Search (BFS)</h2><div id="bfs">';
+  string+='<label for="bfsnode">From Node:  </label>';
+  string+='<input type="text" id="bfsnode">';
+  string+='<button id="bfsbtn" onclick="bfscaller()">Search</button></div><div id="bfsresult"></div>';
   area.innerHTML = string;
 }
 
