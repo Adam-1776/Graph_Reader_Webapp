@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import math
 import pytesseract
+import json
 
 def distance(p0, p1):
     return math.sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)
@@ -163,6 +164,7 @@ def main(path_to_image="static/sample_inputs/graph_def.png"):
 
     listEdges=[]
     listNodes=[]
+    listNodesNames=[]
 
     contours, hierarchy = cv2.findContours(preprocess(exar), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     for cnt in contours:
@@ -202,7 +204,9 @@ def main(path_to_image="static/sample_inputs/graph_def.png"):
             txt = pytesseract.image_to_string(cropped,config='--psm 9')
             txt=processtxt(txt)
             listNodes.append(node(cnt,txt))
+            listNodesNames.append(txt)
     output = cv2.cvtColor(output, cv2.COLOR_GRAY2BGR)
+    matrix = [[0 for i in range(len(listNodes))] for j in range(len(listNodes))]
     print('Found '+str(len(listEdges))+' arrows')
     for obj in listEdges:
         obj.highlight(output)
@@ -219,9 +223,17 @@ def main(path_to_image="static/sample_inputs/graph_def.png"):
                 tip_node=node_
         if len(listNodes)>0 :
             print('Found edge connecting '+ beg_node.name + ' to ' + tip_node.name)
+            matrix[listNodesNames.index(beg_node.name)][listNodesNames.index(tip_node.name)] = 1
     
     for obj in listNodes:
         obj.highlight(output)
+    
+    dictout={
+        "num_nodes": len(listNodes),
+        "node_names": listNodesNames,
+        "matrix": matrix
+    }
+
     directory = r'static/downloads'
     os.chdir(directory)
     index1 = path_to_image.find('/')
@@ -229,5 +241,8 @@ def main(path_to_image="static/sample_inputs/graph_def.png"):
     index1 = imgName.find('/')
     imgName=imgName[index1+1:]
     cv2.imwrite(imgName,output)
+    jsonName=imgName[0:len(imgName)-3]+"json"
+    with open(jsonName, "w") as outfile:
+        json.dump(dictout, outfile)
     print("Writing file "+imgName)
     os.chdir('../..')
