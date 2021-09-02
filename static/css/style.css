@@ -22,7 +22,9 @@ h1{
 
 h2{
   font-size: 23px;
+  font-weight: 900;
   text-align: center;
+  text-decoration: underline;
   margin: 0;
   padding: 20px 0;
   color: #000000;
@@ -75,6 +77,15 @@ h2{
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 11px;
+}
+
+.surround{
+  margin: 15px;
+  padding: 20px;
+  border: #000000;
+  border-style: solid;
+  border-radius: 0%;
+  width: 71em;
 }
 
 .hidden{
@@ -145,6 +156,64 @@ h2{
   margin-bottom: 7px;
 }
 
+#bfmindistance{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#bfmindistance label{
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+#bfmindistresult{
+  font-size: 21px;
+  font-weight: bolder;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+
+#bfmindistresult p{
+  font-size: 21px;
+}
+
+#bfmindistance input[type=text]{
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 16px;
+  font-weight: bolder;
+  margin-left: 0.75em;
+  margin-right: 0.75em;
+  margin-bottom: 7px;
+}
+
+#bfmindistancebtn{
+  display: block;
+  position: relative;
+  width: 100px;
+  height: 35px;
+  border-radius: 25px;
+  background: linear-gradient(40deg, #ff6ec4, #7873f5);
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.75em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .2s ease-out;
+  margin-top: 0.3em;
+/*
+  margin-left: auto;
+  margin-right: auto;
+  */
+  margin-top: -5px;
+}
+
 #bfs{
   display: flex;
   flex-direction: row;
@@ -183,8 +252,10 @@ h2{
   cursor: pointer;
   transition: transform .2s ease-out;
   margin-top: 0.3em;
+  /*
   margin-left: auto;
   margin-right: auto;
+  */
   margin-top: -5px;
 }
 
@@ -230,8 +301,10 @@ h2{
   cursor: pointer;
   transition: transform .2s ease-out;
   margin-top: 0.3em;
+  /*
   margin-left: auto;
   margin-right: auto;
+  */
   margin-top: -5px;
 }
 
@@ -339,7 +412,9 @@ td, th {
   cursor: pointer;
   transition: transform .2s ease-out;
   margin-top: 0.3em;
+  /*
   margin-left: auto;
   margin-right: auto;
+  */
   margin-top: -5px;
 }

@@ -120,6 +120,7 @@ function djistra(matrix,start,end){
       }
     }
   }
+  path="";
   printPath(end, parents);
   //for(let i=0;i<matrix.num_nodes;++i)
     //console.log(matrix.node_names[i]+' '+dist[i]);
@@ -145,12 +146,69 @@ function djistracaller(){
   space.innerHTML=string;
 }
 
+function bfcaller(){
+  let snode=document.getElementById("bfsnode").value.toUpperCase();
+  let enode=document.getElementById("bfenode").value.toUpperCase();
+  for(let i=0;i<matrix2.num_nodes;++i){
+    if(matrix2.node_names[i]==snode) snode=i;
+    if(matrix2.node_names[i]==enode) enode=i;
+  }
+  console.log("Finding paths between "+snode+" "+enode);
+  var t0=performance.now();
+  let numWeights=0;
+  let weights=[];
+  let sources=[];
+  let destinations=[];
+  for(let i=0;i<matrix2.num_nodes;++i){
+    for(let j=0;j<matrix2.num_nodes;++j){
+      if(matrix2.matrix[i][j]!=0){
+        weights[numWeights]=matrix2.matrix[i][j];
+        sources[numWeights]=i;
+        destinations[numWeights]=j;
+        ++numWeights;
+      }
+    }
+  }
+  let dist=new Array(matrix2.num_nodes);
+  for(let i=0;i<matrix2.num_nodes;++i) dist[i]=99999;
+  dist[snode]=0;
+  for(let i=1;i<=matrix2.num_nodes-1;++i){
+    for(let j=0;j<numWeights;++j){
+      let u=sources[j];
+      let v=destinations[j];
+      let weight=weights[j];
+      if(dist[u]!=99999 && dist[u]+weight<dist[v])
+        dist[v]=dist[u]+weight;
+    }
+  }
+  for(let i=0;i<numWeights;++i){
+    let u=sources[i];
+    let v=destinations[i];
+    let weight=weights[i];
+    if(dist[u]!=99999 && dist[u]+weight<dist[v]) {
+      console.log("Graph contains negative weight cycle");
+      return;
+    }
+  }
+  t1=performance.now();
+  djistra(matrix2,snode,enode);
+  console.log(dist[enode]);
+  let space=document.getElementById("bfmindistresult");
+  string='<p>Shortest Path from '+matrix2.node_names[snode]+' to '+matrix2.node_names[enode]+' has length <u>'+dist[enode]+'</u>: (Took ' + (t1-t0) +' milliseconds to compute)</p><br>';
+  path=path.substring(0,path.length-4);
+  string+=path+'<br>';
+  path="";
+  space.innerHTML=string;
+  return;
+}
+
 function bfscaller(){
-  let bfsnode=document.getElementById("bfsnode").value.toUpperCase();
+  let bfsnode=document.getElementById("bfssnode").value.toUpperCase();
+  console.log(bfsnode);
   for(let i=0;i<matrix2.num_nodes;++i){
     if(matrix2.node_names[i]==bfsnode) bfsnode=i;
   }
-  console.log("Finding BFS from "+matrix2.node_names[bfsnode]);
+  console.log("Finding BFS from "+bfsnode+" "+matrix2.node_names[bfsnode]);
   let queue=new Queue();
   let visited=new Array(matrix2.num_nodes);
   for(let i=0;i<visited.length;++i){visited[i]=false;}
@@ -227,22 +285,30 @@ function processMatrix(matrix){
     string += '<br>';
   }
   
-  string+='</div><h2>Find shortest path between two Nodes using Dijkstras Algorithm:</h2>';
+  string+='</div><div class="surround"><h2>Find shortest path between two Nodes using Dijkstras Algorithm:</h2>';
   string+='<br><div id="mindistance">'
   string+='<label for="snode">From Node:  </label>'
   string+='<input type="text" id="snode">'
   string+='<label for="enode">  to node:  </label>'
   string+='<input type="text" id="enode">'
-  string+='<button id="mindistancebtn" onclick="djistracaller()">Find Path</button>';
-  string+='</div><div id="mindistresult"></div>';
-  string+='<h2>Breadth First Search (BFS)</h2><div id="bfs">';
-  string+='<label for="bfsnode">From Node:  </label>';
-  string+='<input type="text" id="bfsnode">';
-  string+='<button id="bfsbtn" onclick="bfscaller()">Search</button></div><div id="bfsresult"></div>';
-  string+='<h2>Depth First Search (DFS)</h2><div id="dfs">';
+  string+='<button id="mindistancebtn" onclick="djistracaller()">Find Path</button></div>';
+  string+='<div id="mindistresult"></div></div>';
+  string+='<div class="surround"><h2>Find shortest path between two Nodes using Bellman Ford Algorithm:</h2>';
+  string+='<br><div id="bfmindistance">'
+  string+='<label for="bfsnode">From Node:  </label>'
+  string+='<input type="text" id="bfsnode">'
+  string+='<label for="bfenode">  to node:  </label>'
+  string+='<input type="text" id="bfenode">'
+  string+='<button id="bfmindistancebtn" onclick="bfcaller()">Find Path</button>';
+  string+='</div><div id="bfmindistresult"></div></div>';
+  string+='<div class="surround"><h2>Breadth First Search (BFS)</h2><div id="bfs">';
+  string+='<label for="bfssnode">From Node:  </label>';
+  string+='<input type="text" id="bfssnode">';
+  string+='<button id="bfsbtn" onclick="bfscaller()">Search</button></div><div id="bfsresult"></div></div>';
+  string+='<div class="surround"><h2>Depth First Search (DFS)</h2><div id="dfs">';
   string+='<label for="dfsnode">From Node:  </label>';
   string+='<input type="text" id="dfsnode">';
-  string+='<button id="dfsbtn" onclick="dfscaller()">Search</button></div><div id="dfsresult"></div>';
+  string+='<button id="dfsbtn" onclick="dfscaller()">Search</button></div><div id="dfsresult"></div></div>';
   area.innerHTML = string;
 }
 
