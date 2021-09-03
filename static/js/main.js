@@ -207,9 +207,14 @@ function bfcaller(){
   djistra(matrix2,snode,enode);
   console.log(dist[enode]);
   let space=document.getElementById("bfmindistresult");
-  string='<p>Shortest Path from '+matrix2.node_names[snode]+' to '+matrix2.node_names[enode]+' has length <u>'+dist[enode]+'</u>: (Took ' + (t1-t0) +' milliseconds to compute)</p><br>';
-  path=path.substring(0,path.length-4);
-  string+=path+'<br>';
+  if(dist[enode]!=99999){
+    string='<p>Shortest Path from '+matrix2.node_names[snode]+' to '+matrix2.node_names[enode]+' has length <u>'+dist[enode]+'</u>: (Took ' + (t1-t0) +' milliseconds to compute)</p><br>';
+    path=path.substring(0,path.length-4);
+    string+=path+'<br>';
+  }
+  else{
+    string="<p>No path exists between "+matrix2.node_names[snode]+" and "+matrix2.node_names[enode]+"</p>";
+  }
   path="";
   space.innerHTML=string;
   return;
