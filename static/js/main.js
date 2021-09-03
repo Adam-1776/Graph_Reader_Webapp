@@ -11,6 +11,13 @@ class Stack{
     return this.items.pop();
   }
   peek(){return this.items[this.items.length - 1];}
+  inStack(element){
+    for(let i=0;i<this.items.length;++i){
+      if(this.items[i]==element)
+        return i;
+    }
+    return -1;
+  }
   isEmpty(){return this.items.length == 0;}
 }
 
@@ -94,9 +101,10 @@ function minDistance(matrix,dist,sptSet){
 }
 
 function printPath(currentVertex,parents){
-  if(currentVertex==-1) return;
+  console.log("printPath called for "+currentVertex);
+  if(currentVertex==-1 || currentVertex===undefined) return;
   printPath(parents[currentVertex], parents);
-  console.log("path "+currentVertex+" ");
+  //console.log("path "+currentVertex+" ");
   path+=matrix2.node_names[currentVertex]+" -> ";
 }
 
@@ -109,14 +117,14 @@ function djistra(matrix,start,end){
   }
   dist[start]=0;
   let parents = new Array(matrix.num_nodes);
-  parents[start] = -1;
+  parents[start]=-1;
   for(let count=0;count<matrix.num_nodes-1;++count){
     let u=minDistance(matrix,dist,sptSet);
     sptSet[u]=true;
     for(let v=0;v<matrix.num_nodes;++v){
       if(!sptSet[v] && matrix.matrix[u][v]!=0 && dist[u]!=99999 && dist[u]+matrix.matrix[u][v]<dist[v]){
         dist[v]=dist[u]+matrix.matrix[u][v];
-        parents[v] = u;
+        parents[v]=u;
       }
     }
   }
@@ -128,7 +136,7 @@ function djistra(matrix,start,end){
 }
 
 function djistracaller(){
-  var t0 = performance.now()
+  var t0 = performance.now();
   let snode=document.getElementById("snode").value.toUpperCase();
   let enode=document.getElementById("enode").value.toUpperCase();
   for(let i=0;i<matrix2.num_nodes;++i){
@@ -139,9 +147,14 @@ function djistracaller(){
   let ret = djistra(matrix2,snode,enode);
   var t1 = performance.now();
   let space=document.getElementById("mindistresult");
-  string='<p>Shortest Path from '+matrix2.node_names[snode]+' to '+matrix2.node_names[enode]+' has length <u>'+ret+'</u>: (Took ' + (t1-t0) +' milliseconds to compute)</p><br>';
-  path=path.substring(0,path.length-4);
-  string+=path+'<br>';
+  if(ret!=99999){
+    string='<p>Shortest Path from '+matrix2.node_names[snode]+' to '+matrix2.node_names[enode]+' has length <u>'+ret+'</u>: (Took ' + (t1-t0) +' milliseconds to compute)</p><br>';
+    path=path.substring(0,path.length-4);
+    string+=path+'<br>';
+  }
+  else{
+    string="<p>No path exists between "+matrix2.node_names[snode]+" and "+matrix2.node_names[enode]+"</p>";
+  }
   path="";
   space.innerHTML=string;
 }
@@ -260,6 +273,42 @@ function dfscaller(){
   space.innerHTML=string;
 }
 
+function isCyclicUtil(v, visited, recStack){
+  if(visited[v]==-1){
+    visited[v]=1;
+    recStack[v]=1;
+      for(let j=0;j<matrix2.num_nodes;++j){
+        if(matrix2.matrix[v][j]!=0 && v!=j){
+            if(visited[j]==-1 && isCyclicUtil(j,visited,recStack))
+              return true;
+            else if (recStack[j]==1)
+              return true;
+        }
+      }
+    
+    recStack[v] = -1;
+    return false;
+  }
+}
+
+function cyclecaller(){
+  space=document.getElementById("cycleresult");
+  let visited=new Array(matrix2.num_nodes);
+  let recStack=new Array(matrix2.num_nodes);
+  for(let i=0;i<matrix2.num_nodes;++i){
+    visited[i]=-1;
+    recStack[i]=-1;
+  }
+  for(let i=0;i<matrix2.num_nodes;++i){
+    if(isCyclicUtil(i,visited,recStack)){
+      space.innerHTML="<p>Cycle Detected</p>";
+      return true;
+    }
+  }
+  space.innerHTML="<p>No cycles are present</p>";
+  return false;
+}
+
 function processMatrix(matrix){
   //console.log(JSON.stringify(matrix));
   matrix2=matrix;
@@ -309,6 +358,8 @@ function processMatrix(matrix){
   string+='<label for="dfsnode">From Node:  </label>';
   string+='<input type="text" id="dfsnode">';
   string+='<button id="dfsbtn" onclick="dfscaller()">Search</button></div><div id="dfsresult"></div></div>';
+  string+='<div class="surround"><h2>Detect Cycles in Graph</h2><div id="cycle">';
+  string+='<button id="cyclebtn" onclick="cyclecaller()">Search</button></div><div id="cycleresult"></div></div>';
   area.innerHTML = string;
 }
 

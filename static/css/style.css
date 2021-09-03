@@ -156,6 +156,49 @@ h2{
   margin-bottom: 7px;
 }
 
+#cycle{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#cycleresult{
+  font-size: 21px;
+  font-weight: bolder;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+
+#cycleresult p{
+  font-size: 21px;
+}
+
+#cyclebtn{
+  display: block;
+  position: relative;
+  width: 100px;
+  height: 35px;
+  border-radius: 25px;
+  background: linear-gradient(40deg, #ff6ec4, #7873f5);
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.75em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .2s ease-out;
+  margin-top: 0.3em;
+/*
+  margin-left: auto;
+  margin-right: auto;
+  */
+  margin-top: -5px;
+}
+
 #bfmindistance{
   display: flex;
   flex-direction: row;
